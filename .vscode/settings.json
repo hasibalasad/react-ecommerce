@@ -1,0 +1,13 @@
+{
+    "cSpell.words": ["filterproduct"],
+    "workbench.activityBar.visible": true,
+    "workbench.colorCustomizations": {},
+    "emmet.triggerExpansionOnTab": true,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "vue-html": "html",
+        "razor": "html",
+        "plaintext": "jade"
+    },
+    "json.schemas": []
+}
