@@ -18,42 +18,55 @@ const FilterReducer = (state, action) => {
             };
 
         case "GET_SORT_VALUE":
-            const selectSortEl = document.getElementById("sort");
-            const sortValue =
-                selectSortEl.options[selectSortEl.selectedIndex].value;
-            // console.log(sortValue);
+            // const selectSortEl = document.getElementById("sort");
+            // const sortValue = selectSortEl.options[selectSortEl.selectedIndex].value;
             return {
                 ...state,
-                sorting_value: sortValue,
+                sorting_value: action.payload,
             };
 
         case "GET_SORTED_PRODUCTS":
-            let newSortProducts;
-            const tempSortProducts = [...action.payload];
+            const { filter_products, sorting_value } = state;
 
-            if (state.sorting_value === "a-z") {
-                newSortProducts = tempSortProducts.sort((a, b) => {
-                    return a.name.localeCompare(b.name);
-                });
-            }
-            if (state.sorting_value === "z-a") {
-                newSortProducts = tempSortProducts.sort((a, b) => {
-                    return b.name.localeCompare(a.name);
-                });
-            }
-            if (state.sorting_value === "lowest") {
-                newSortProducts = tempSortProducts.sort((a, b) => {
-                    return a.price - b.price;
-                });
-            }
-            if (state.sorting_value === "highest") {
-                newSortProducts = tempSortProducts.sort((a, b) => {
-                    return b.price - a.price;
-                });
-            }
+            const tempSortProducts = [...filter_products];
+
+            const sortingProduct = (a, b) => {
+                switch (sorting_value) {
+                    case "a-z":
+                        return a.name.localeCompare(b.name);
+                    case "z-a":
+                        return b.name.localeCompare(a.name);
+                    case "lowest":
+                        return a.price - b.price;
+                    case "highest":
+                        return b.price - a.price;
+
+                    default:
+                        return tempSortProducts;
+                }
+            };
+            let newSortProducts = tempSortProducts.sort(sortingProduct);
+
             return {
                 ...state,
                 filter_products: newSortProducts,
+            };
+
+        case "UPDATE_FILTERS_VALUE":
+            return {
+                ...state,
+                text: action.payload,
+            };
+
+        case "FILTER_PRODUCTS":
+            const { all_Products, text } = state;
+            let tempFilterProducts = all_Products ? [...all_Products] : [];
+            tempFilterProducts = tempFilterProducts?.filter((currentEl) =>
+                currentEl.name.toLowerCase().includes(text)
+            );
+            return {
+                ...state,
+                filter_products: tempFilterProducts,
             };
 
         default:
