@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { FaCheck } from "react-icons/fa";
 import { useFilterContext } from "../context/filterContext";
 
 const FilterSection = () => {
     const {
         all_Product,
         updateFilterValue,
-        filters: { text, category },
+        filters: { text, category, color },
     } = useFilterContext();
 
     // function to set unique data for filter
@@ -14,12 +15,17 @@ const FilterSection = () => {
         let propertyValue = data.map((curEl) => {
             return curEl[property];
         });
-        return ["all", ...new Set(propertyValue)]; // using set for unique property
+        if (property === "colors") {
+            return ["all", ...new Set([].concat(...propertyValue))];
+        } else {
+            return ["all", ...new Set(propertyValue)]; // using set for unique property
+        }
     };
 
     // to get unique data for filter
     const uniqueCategoryData = getUniqueData(all_Product, "category");
     const uniqueCompanyData = getUniqueData(all_Product, "company");
+    const uniqueColorsData = getUniqueData(all_Product, "colors");
 
     return (
         <Wrapper>
@@ -68,6 +74,29 @@ const FilterSection = () => {
                         </option>
                     ))}
                 </select>
+            </div>
+
+            <div className="filter-colors colors">
+                <h3>Colors</h3>
+                <div className="filter-color-style">
+                    {uniqueColorsData.map((curColor, index) => (
+                        <button
+                            key={index}
+                            type="button"
+                            name="color"
+                            value={curColor}
+                            onClick={updateFilterValue}
+                            className={
+                                curColor === color
+                                    ? `btnStyle active`
+                                    : `btnStyle`
+                            }
+                            style={{ backgroundColor: curColor }}
+                        >
+                            {curColor === color ? <FaCheck /> : null}
+                        </button>
+                    ))}
+                </div>
             </div>
         </Wrapper>
     );
