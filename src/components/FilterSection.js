@@ -3,7 +3,24 @@ import styled from "styled-components";
 import { useFilterContext } from "../context/filterContext";
 
 const FilterSection = () => {
-    const { updateFilterValue, text } = useFilterContext();
+    const {
+        all_Product,
+        updateFilterValue,
+        filters: { text, category },
+    } = useFilterContext();
+
+    // function to set unique data for filter
+    const getUniqueData = (data, property) => {
+        let propertyValue = data.map((curEl) => {
+            return curEl[property];
+        });
+        return ["all", ...new Set(propertyValue)]; // using set for unique property
+    };
+
+    // to get unique data for filter
+    const uniqueCategoryData = getUniqueData(all_Product, "category");
+    const uniqueCompanyData = getUniqueData(all_Product, "company");
+
     return (
         <Wrapper>
             <div className="filter-search">
@@ -13,8 +30,44 @@ const FilterSection = () => {
                         name="text"
                         value={text}
                         onChange={updateFilterValue}
+                        placeholder="SEARCH"
                     />
                 </form>
+            </div>
+
+            <div className="filter-category">
+                <h3>Category</h3>
+                <div>
+                    {uniqueCategoryData.map((curEl, index) => (
+                        <button
+                            key={index}
+                            type="button"
+                            name="category"
+                            value={curEl}
+                            onClick={updateFilterValue}
+                            className={
+                                category === curEl ? `active` : undefined
+                            }
+                        >
+                            {curEl}
+                        </button>
+                    ))}
+                </div>
+            </div>
+            <div className="filter-company">
+                <h3>Company</h3>
+                <select
+                    name="company"
+                    id="company"
+                    className="filter-company--select"
+                    onClick={updateFilterValue}
+                >
+                    {uniqueCompanyData.map((curEl, index) => (
+                        <option key={index} value={curEl}>
+                            {curEl}
+                        </option>
+                    ))}
+                </select>
             </div>
         </Wrapper>
     );
@@ -34,6 +87,8 @@ const Wrapper = styled.section`
         input {
             padding: 0.6rem 1rem;
             width: 80%;
+            border-color: rgba(33, 37, 41, 0.6);
+            border-radius: 5%;
         }
     }
 

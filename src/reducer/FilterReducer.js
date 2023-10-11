@@ -4,7 +4,7 @@ const FilterReducer = (state, action) => {
             return {
                 ...state,
                 filter_products: [...action.payload],
-                all_Products: [...action.payload],
+                all_Product: [...action.payload],
             };
         case "SET_GRIDVIEW":
             return {
@@ -53,17 +53,38 @@ const FilterReducer = (state, action) => {
             };
 
         case "UPDATE_FILTERS_VALUE":
+            const { name, value } = action.payload;
             return {
                 ...state,
-                text: action.payload,
+                filters: {
+                    ...state.filters,
+                    [name]: value,
+                },
             };
 
         case "FILTER_PRODUCTS":
-            const { all_Products, text } = state;
-            let tempFilterProducts = all_Products ? [...all_Products] : [];
-            tempFilterProducts = tempFilterProducts?.filter((currentEl) =>
-                currentEl.name.toLowerCase().includes(text)
-            );
+            const {
+                all_Product,
+                filters: { text, category, company },
+            } = state;
+
+            let tempFilterProducts = [...all_Product];
+
+            if (text) {
+                tempFilterProducts = tempFilterProducts?.filter((currentEl) =>
+                    currentEl.name.toLowerCase().includes(text)
+                );
+            }
+            if (category !== "all") {
+                tempFilterProducts = tempFilterProducts.filter(
+                    (currentEl) => currentEl.category === category
+                );
+            }
+            if (company !== "all") {
+                tempFilterProducts = tempFilterProducts.filter(
+                    (currentEl) => currentEl.company === company
+                );
+            }
             return {
                 ...state,
                 filter_products: tempFilterProducts,
