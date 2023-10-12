@@ -1,10 +1,18 @@
 const FilterReducer = (state, action) => {
     switch (action.type) {
         case "GET_PRODUCT":
+            const maxPrice = action.payload.reduce((accEl, currEl) => {
+                return Math.max(accEl, currEl.price);
+            }, 0);
             return {
                 ...state,
                 filter_products: [...action.payload],
                 all_Product: [...action.payload],
+                filters: {
+                    ...state.filters,
+                    maxPrice: maxPrice,
+                    price: maxPrice,
+                },
             };
         case "SET_GRIDVIEW":
             return {
@@ -65,7 +73,7 @@ const FilterReducer = (state, action) => {
         case "FILTER_PRODUCTS":
             const {
                 all_Product,
-                filters: { text, category, company, color },
+                filters: { text, category, company, color, price },
             } = state;
 
             let tempFilterProducts = [...all_Product];
@@ -90,9 +98,29 @@ const FilterReducer = (state, action) => {
                     currentEl.colors.includes(color)
                 );
             }
+            if (price) {
+                tempFilterProducts = tempFilterProducts.filter((currentEl) => {
+                    return currentEl.price <= price;
+                });
+            }
             return {
                 ...state,
                 filter_products: tempFilterProducts,
+            };
+
+        case "CLEAR_FILTER":
+            return {
+                ...state,
+                filters: {
+                    ...state.filters,
+                    text: "",
+                    category: "all",
+                    company: "all",
+                    color: "all",
+                    price: state.filters.maxPrice,
+                    maxPrice: state.filters.maxPrice,
+                    minPrice: 0,
+                },
             };
 
         default:

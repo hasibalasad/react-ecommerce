@@ -14,6 +14,9 @@ const initialState = {
         category: "all",
         company: "all",
         color: "all",
+        price: 0,
+        maxPrice: 0,
+        minPrice: 0,
     },
 };
 
@@ -42,6 +45,11 @@ export const FilterContextProvider = ({ children }) => {
         });
     };
 
+    const clearFilter = (event) => {
+        dispatch({
+            type: "CLEAR_FILTER",
+        });
+    };
     const updateFilterValue = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -76,6 +84,7 @@ export const FilterContextProvider = ({ children }) => {
                 setListView,
                 handleSort,
                 updateFilterValue,
+                clearFilter,
             }}
         >
             {children}

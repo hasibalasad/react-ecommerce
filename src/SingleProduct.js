@@ -27,7 +27,6 @@ const SingleProduct = () => {
         reviews,
         image,
     } = singleProduct;
-    console.log(price);
 
     useEffect(() => {
         getSingleProduct(`${API}/?id=${id}`);
