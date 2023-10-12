@@ -14,6 +14,23 @@ const CartReducer = (state, action) => {
             cart: [...state.cart, newCartItem],
         };
     }
+
+    if (action.type === "REMOVE_CART_ITEM") {
+        let updatedCartItem = state.cart.filter((curEl) => {
+            return curEl.id !== action.payload;
+        });
+        return {
+            ...state,
+            cart: updatedCartItem,
+        };
+    }
+
+    if (action.type === "CLEAR_CART") {
+        return {
+            ...state,
+            cart: [],
+        };
+    }
     return state;
 };
 
