@@ -15,6 +15,7 @@ const getLocalCartData = () => {
 const initialState = {
     // cart: [],
     cart: getLocalCartData(),
+    totalItem: 0,
 };
 const CartContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -38,13 +39,36 @@ const CartContextProvider = ({ children }) => {
         });
     };
 
+    const setIncrease = (id) => {
+        dispatch({
+            type: "SET_INCREASE",
+            payload: id,
+        });
+    };
+    const setDecrease = (id) => {
+        dispatch({
+            type: "SET_DECREASE",
+            payload: id,
+        });
+    };
+
     useEffect(() => {
+        dispatch({
+            type: "CART_TOTAL_ITEM",
+        });
         localStorage.setItem("cartData", JSON.stringify(state.cart));
     }, [state.cart]);
 
     return (
         <CartContext.Provider
-            value={{ ...state, addToCart, removeCartItem, clearCart }}
+            value={{
+                ...state,
+                addToCart,
+                removeCartItem,
+                clearCart,
+                setIncrease,
+                setDecrease,
+            }}
         >
             {children}
         </CartContext.Provider>
