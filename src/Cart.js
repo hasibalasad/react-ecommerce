@@ -53,14 +53,14 @@ const Cart = () => {
                         <div>
                             <p>shipping fee:</p>
                             <p>
-                                <FormatPrice price={shippingFee} />
+                                <FormatPrice price={50000} />
                             </p>
                         </div>
                         <hr />
                         <div>
                             <p>order total:</p>
                             <p>
-                                <FormatPrice price={shippingFee + totalPrice} />
+                                <FormatPrice price={totalPrice + 50000} />
                             </p>
                         </div>
                     </div>
