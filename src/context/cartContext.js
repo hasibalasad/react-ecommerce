@@ -15,7 +15,9 @@ const getLocalCartData = () => {
 const initialState = {
     // cart: [],
     cart: getLocalCartData(),
-    totalItem: 0,
+    totalItem: "",
+    totalPrice: "",
+    shippingFee: 50000,
 };
 const CartContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -54,7 +56,7 @@ const CartContextProvider = ({ children }) => {
 
     useEffect(() => {
         dispatch({
-            type: "CART_TOTAL_ITEM",
+            type: "CART_TOTAL_ITEM_PRICE",
         });
         localStorage.setItem("cartData", JSON.stringify(state.cart));
     }, [state.cart]);

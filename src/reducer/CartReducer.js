@@ -104,18 +104,24 @@ const CartReducer = (state, action) => {
         };
     }
 
-    if (action.type === "CART_TOTAL_ITEM") {
-        let updatedItemVal = state.cart.reduce((initialValue, currentItem) => {
-            let { amount } = currentItem;
-            initialValue = initialValue + amount;
-            return initialValue;
-        }, 0);
+    if (action.type === "CART_TOTAL_ITEM_PRICE") {
+        let updatedItemVal = state.cart.reduce(
+            (initialValue, currentItem) => {
+                let { amount, price } = currentItem;
+                initialValue.item = initialValue.item + amount;
+                initialValue.price = initialValue.price + amount * price;
+                return initialValue;
+            },
+            { item: 0, price: 0 }
+        );
 
         return {
-            state,
-            totalItem: updatedItemVal,
+            ...state,
+            totalItem: updatedItemVal.item,
+            totalPrice: updatedItemVal.price,
         };
     }
+
     return state;
 };
 
