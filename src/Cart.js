@@ -6,7 +6,7 @@ import { Button } from "./styles/Button";
 import FormatPrice from "./helpers/FormatPrice";
 
 const Cart = () => {
-    const { cart, clearCart, totalPrice, shippingFee } = useCartContext();
+    const { cart, clearCart, totalPrice } = useCartContext();
 
     if (cart.length === 0) {
         return (
